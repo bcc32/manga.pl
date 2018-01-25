@@ -31,7 +31,7 @@ sub main {
   my $old_href = read_old();
 
   open my $dbfh,  '>>:encoding(utf8)', $DBFILE;
-  open my $newfh, '>:encoding(utf8)', $NEWFILE;
+  open my $newfh, '>>:encoding(utf8)', $NEWFILE;
 
   # only affects $dbfh since $csv has its own eol setting
   local $\ = $RS;
