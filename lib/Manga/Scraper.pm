@@ -82,7 +82,8 @@ sub get_page_releases {
   my $html = get_page_html($n);
   $p->parse($html);
 
-  \@releases;
+  # ascending by date
+  [reverse @releases];
 }
 
 1;
