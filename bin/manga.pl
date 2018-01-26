@@ -22,6 +22,7 @@ sub read_old {
 
   my %old;
   while (my $line = <$fh>) {
+    chomp $line;
     $old{$line} = 1;
   }
   \%old;
