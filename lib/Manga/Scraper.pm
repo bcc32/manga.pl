@@ -23,7 +23,7 @@ Readonly my $PERPAGE  => 100;
 my $http = HTTP::Tiny->new;
 
 sub get_page_html {
-  my ($n) = @_;
+  my ($n, $code) = @_;
 
   my $params = $http->www_form_urlencode({
     act     => 'archive',
@@ -31,15 +31,13 @@ sub get_page_html {
     page    => $n,
   });
   my $url = "$BASE_URL?$params";
-  # TODO refactor to use data callbacks
-  my $resp = $http->get($url);
+
+  my $resp = $http->get($url, { data_callback => sub { $code->($_[0]) } });
 
   $resp->{status} != 599 or die $resp->{content};
 
   $resp->{success}
     or die "Failed to GET $url\n$resp->{status} $resp->{reason}\n";
-
-  $resp->{content};
 }
 
 sub get_page_releases {
@@ -82,8 +80,7 @@ sub get_page_releases {
   );
   $p->report_tags(qw(tr td));
 
-  my $html = get_page_html($n);
-  $p->parse($html);
+  get_page_html($n, sub { $p->parse($_[0]) } );
 
   # ascending by date
   [reverse @releases];
