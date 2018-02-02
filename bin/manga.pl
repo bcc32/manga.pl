@@ -1,6 +1,7 @@
 use 5.016;
 use strict;
 use warnings;
+use autodie;
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
@@ -8,7 +9,7 @@ use lib "$FindBin::Bin/../lib";
 use Readonly;
 use Text::CSV;
 
-use Manga::Scraper qw(get_page_releases);
+use Manga::Scraper qw( get_page_releases );
 
 # TODO get from options
 Readonly my $DBFILE  => 'releases.dat';
@@ -17,8 +18,11 @@ Readonly my $PAGES   => 50;
 Readonly my $RS      => "\x1e";         # ASCII Record Separator
 
 sub read_old {
-  local $/ = $RS;
+  no autodie qw( open );
+
   open my $fh, '<:encoding(utf8)', $DBFILE or return;
+
+  local $/ = $RS;
 
   my %old;
   while (my $line = <$fh>) {
