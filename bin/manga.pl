@@ -28,14 +28,16 @@ sub read_old {
   \%old;
 }
 
+sub _progress {
+  local $| = 1;
+  print '.';
+}
+
 sub main {
   my $old_href = read_old();
 
   open my $dbfh,  '>>:encoding(utf8)', $DBFILE;
   open my $newfh, '>>:encoding(utf8)', $NEWFILE;
-
-  # only affects $dbfh since $csv has its own eol setting
-  local $\ = $RS;
 
   my $csv = Text::CSV->new({ binary => 1 });
   $csv->eol("\n");
@@ -45,9 +47,11 @@ sub main {
     for my $release (@$releases_aref) {
       unless (exists $old_href->{$release}) {
         $csv->print($newfh, $release->fields);
-        print $dbfh $release;
+        print $dbfh $release, $RS;
       }
     }
+    _progress();
+    sleep 1;
   }
 }
 
