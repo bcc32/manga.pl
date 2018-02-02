@@ -6,6 +6,7 @@ use autodie;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 
+use IO::Interactive qw( interactive );
 use Readonly;
 use Text::CSV;
 
@@ -16,6 +17,8 @@ Readonly my $DBFILE  => 'releases.dat';
 Readonly my $NEWFILE => 'new.csv';
 Readonly my $PAGES   => 50;
 Readonly my $RS      => "\x1e";         # ASCII Record Separator
+
+interactive->autoflush(1);
 
 sub read_old {
   no autodie qw( open );
@@ -33,8 +36,7 @@ sub read_old {
 }
 
 sub _progress {
-  local $| = 1;
-  print '.';
+  print { interactive } '.';
 }
 
 sub main {
