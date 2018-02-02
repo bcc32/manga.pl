@@ -13,7 +13,7 @@ use Manga::Scraper qw(get_page_releases);
 # TODO get from options
 Readonly my $DBFILE  => 'releases.dat';
 Readonly my $NEWFILE => 'new.csv';
-Readonly my $PAGES   => 5;
+Readonly my $PAGES   => 50;
 Readonly my $RS      => "\x1e";         # ASCII Record Separator
 
 sub read_old {
