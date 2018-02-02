@@ -34,10 +34,10 @@ sub get_page_html {
   # TODO refactor to use data callbacks
   my $resp = $http->get($url);
 
+  $resp->{status} != 599 or die $resp->{content};
+
   $resp->{success}
-    or die "Failed to GET $url\n"
-         . "$resp->{status} $resp->{reason}\n"
-         . ($resp->{status} == 599 ? "$resp->{content}\n" : '');
+    or die "Failed to GET $url\n$resp->{status} $resp->{reason}\n";
 
   $resp->{content};
 }
