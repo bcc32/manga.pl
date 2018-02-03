@@ -57,7 +57,7 @@ sub main {
       }
     }
     _progress();
-    sleep 1;
+    sleep 2;
   }
 }
 
