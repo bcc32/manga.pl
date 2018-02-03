@@ -70,7 +70,13 @@ sub get_page_releases {
       $capture = 0;
     }
   };
-  my $text = sub { $field .= $_[0] if $capture };
+  my $text = sub {
+    return unless $capture;
+
+    my ($text) = @_;
+    $field .= $text unless $text eq '*'; # '*' by itself used to mark
+                                         # recently-updated series info
+  };
 
   my $p = HTML::Parser->new(
     api_version => 3,
