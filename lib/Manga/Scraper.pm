@@ -88,6 +88,9 @@ sub get_page_releases {
 
   get_page_html($n, sub { $p->parse($_[0]) } );
 
+  warn "No releases scraped from page.  Maybe the parser needs to be updated?\n"
+    unless @releases;
+
   # ascending by date
   [reverse @releases];
 }
